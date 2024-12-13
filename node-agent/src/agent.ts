@@ -50,7 +50,7 @@ export default defineAgent({
 
     const fncCtx: llm.FunctionContext = {
       weather: {
-        description: 'Get the weather in a location',
+        description: 'Use the Weather API to get the current or forecasted weather for a location',
         parameters: z.object({
           location: z.string().describe('The location to get the weather for'),
         }),

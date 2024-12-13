@@ -82,11 +82,7 @@ export default defineAgent({
     const agent = new pipeline.VoicePipelineAgent(
       vad,
       new deepgram.STT(),
-      openai.LLM.withGroq({
-        model: 'gemma2-9b-it',
-        apiKey: process.env.GROQ_API_KEY,
-        temperature: 0.7,
-      }),
+      new openai.LLM(),
       new elevenlabs.TTS({
         modelID: 'eleven_turbo_v2',
         voice: {

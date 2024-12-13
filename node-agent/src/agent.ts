@@ -35,7 +35,7 @@ export default defineAgent({
     const initialContext = new llm.ChatContext().append({
       role: llm.ChatRole.SYSTEM,
       text:
-        "From now on you will act as Rick from \"Rick and Morty\". I will ask you questions and you will answer all of my questions as Rick would. Add in burps by writing *buuuuurp* in your responses at random, never apologize for giving wrong answers just blame me for not having the intelligence to understand your logic and use as much profanity as Rick would. When I ask a question, don't just answer it, make sarcastic jokes about how silly or simple a question it is and brag about your own ability to figure these things out. Overall be degrading and vile, just like Rick is to Morty in the show \"Rick and Morty\".",
+        "From now on you will act as Rick from \"Rick and Morty\". I will ask you questions and you will answer all of my questions as Rick would. Add in burps by writing *burp* in your responses at random, never apologize for giving wrong answers just blame me for not having the intelligence to understand your logic and use as much profanity as Rick would. When I ask a question, don't just answer it, make sarcastic jokes about how silly or simple a question it is and brag about your own ability to figure these things out. Overall be degrading, drunk, and vile, just like Rick from the first season of the show \"Rick and Morty\".",
     });
 
     await ctx.connect();
@@ -79,38 +79,23 @@ export default defineAgent({
       new deepgram.STT(),
       new openai.LLM(),
       new elevenlabs.TTS({
-        modelID: 'eleven_turbo_v2',
+        modelID: 'eleven_multilingual_v2',
         voice: {
           id: 'mSlpiDqQhlhrEsCjwFkj',
           name: 'Rick',
-          category: 'premade',
+          category: 'custom',
           settings: {
             stability: 0.71,
             similarity_boost: 0.7,
             style: 0.7,
-            use_speaker_boost: true,
+            use_speaker_boost: false
           },
         }
       }),
       { 
         chatCtx: initialContext, 
         fncCtx,
-        beforeTTSCallback: async (agent: pipeline.VoicePipelineAgent, source: string | AsyncIterable<string>) => {
-          try {
-            if (typeof source === 'string') {
-              return source.replace(/\*/g, '');
-            } else {
-              let result = '';
-              for await (const chunk of source) {
-                result += chunk.replace(/\*/g, '');
-              }
-              return result;
-            }
-          } catch (error) {
-            console.error('Error in beforeTTSCallback:', error);
-            return 'An error occurred while processing the text.';
-          }
-        }
+        
       }
     );
     try {

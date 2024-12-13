@@ -65,7 +65,7 @@ export default defineAgent({
         },
       },
       spotifyCurrentTrack: {
-        description: 'Get the currently playing track on Spotify',
+        description: 'Use Spotify to get the currently playing track',
         parameters: z.object({}),
         execute: async () => {
           console.debug('executing Spotify current track function');
